@@ -436,8 +436,8 @@
         <div class="big-emoji">💌</div>
         <span class="section-label">Pesan Untukmu</span>
         <h2>Untuk Naila Shafa Azzahra</h2>
-        <p>Ada sesuatu yang selalu ingin aku katakan padamu…<br>
-           sesuatu yang tidak cukup ditulis dalam satu kata.</p>
+        <!-- <p>Ada sesuatu yang selalu ingin aku katakan padamu…<br>
+           sesuatu yang tidak cukup ditulis dalam satu kata.</p> -->
         <div class="flip-hint">
           <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
           Klik / sentuh untuk membuka 💕
@@ -514,27 +514,27 @@
   <div class="thumb-strip">
     <div class="thumb" style="--rot:-2deg" onclick="rotateCubeTo(0,0)">
       <div class="thumb-img"><img src="asset/7.jpeg"></div>
-      <div class="thumb-caption">Pertama 💕</div>
+      <div class="thumb-caption">18/5/2026</div>
     </div>
     <div class="thumb" style="--rot:1.5deg" onclick="rotateCubeTo(0,180)">
       <div class="thumb-img"><img src="asset/8.jpg"></div>
-      <div class="thumb-caption">Termanis 🥰</div>
+      <div class="thumb-caption">2/18/2026</div>
     </div>
     <div class="thumb" style="--rot:-1deg" onclick="rotateCubeTo(0,90)">
       <div class="thumb-img"><img src="asset/9.jpg"></div>
-      <div class="thumb-caption">Petualangan 🗺️</div>
+      <div class="thumb-caption">5/10/2026</div>
     </div>
     <div class="thumb" style="--rot:2deg" onclick="rotateCubeTo(0,-90)">
       <div class="thumb-img"><img src="asset/10.jpg"></div>
-      <div class="thumb-caption">Ajaib 🌙</div>
+      <div class="thumb-caption">2/18/2026</div>
     </div>
     <div class="thumb" style="--rot:-1.5deg" onclick="rotateCubeTo(-90,0)">
       <div class="thumb-img"><img src="asset/11.jpeg"></div>
-      <div class="thumb-caption">Favorit 💖</div>
+      <div class="thumb-caption">5/7/2026</div>
     </div>
     <div class="thumb" style="--rot:1deg" onclick="rotateCubeTo(90,0)">
       <div class="thumb-img"><img src="asset/12.jpeg"></div>
-      <div class="thumb-caption">Manis 🍰</div>
+      <div class="thumb-caption">5/30/2026</div>
     </div>
   </div>
 </section>
@@ -544,9 +544,9 @@
 ══════════════════════════════════════════════════ -->
 <section id="musik">
   <div class="musik-wrapper reveal-on-scroll">
-    <span class="section-label">🎵 Lagu Kita</span>
+    <span class="section-label">Lagu Kita</span>
     <h2>Playlist Spesial Untukmu</h2>
-    <p>Dengarkan sambil membaca pesanku 🎧</p>
+    <p>Dengerin sambil membaca pesanku</p>
     <!--
       CARA GANTI PLAYLIST:
       1. Buka playlist Spotify → ••• → Share → Embed playlist
@@ -574,8 +574,8 @@
      FOOTER
 ══════════════════════════════════════════════════ -->
 <footer>
-  <button class="btn-secret" onclick="openSecret()">🔒 Ada Kejutan Rahasia...</button>
-  <p>Dibuat dengan 💕 khusus untuk Naila Shafa Azzahra · 2025</p>
+  <button class="btn-secret" onclick="openSecret()">pesan buat kamu naila hadeh</button>
+  <p>untuk Naila Shafa Azzahra · 11/3/2026</p>
 </footer>
 
 <!-- ══════════════════════════════════════════════════
@@ -583,15 +583,13 @@
 ══════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="secretModal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div class="modal-box">
-    <div class="emoji">💌</div>
-    <h3 id="modal-title">Pesan Paling Rahasia</h3>
+    <div class="emoji">😂</div>
+    <!-- <h3 id="modal-title">Pesan</h3> -->
     <p>
-      Kalau kamu membaca ini, kamu sudah tahu bahwa kamu adalah orang yang
-      paling spesial di seluruh hidupku. Tidak ada kata yang cukup untuk
-      menggambarkan betapa bersyukurnya aku memilikimu.<br><br>
-      <strong>Aku mencintaimu — bukan hanya hari ini, tapi setiap hari.</strong> 💕
+      KAPAN KITA JALANN WKWKWKWKWKWKWKWKWKWKWKW
+      <!-- <strong>Aku mencintaimu — bukan hanya hari ini, tapi setiap hari.</strong> 💕 -->
     </p>
-    <button class="btn-close-modal" onclick="closeSecret()">Tutup 🌸</button>
+    <button class="btn-close-modal" onclick="closeSecret()">Tutup</button>
   </div>
 </div>
 
