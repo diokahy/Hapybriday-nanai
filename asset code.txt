@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <link rel="icon" type="image/png" href="asset/icon.jpg">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday, Naila Shafa Azzahra! 🎀</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Lato', sans-serif;
+      background: #fff0f5;
+      color: #5c2d3e;
+      overflow-x: hidden;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #ffe4ef; }
+    ::-webkit-scrollbar-thumb { background: #f4a0bb; border-radius: 10px; }
+
+    /* ─── CANVAS HEARTS ────────────────────────────────────── */
+    #heart-canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ─── SECTIONS ─────────────────────────────────────────── */
+    section {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 60px 20px;
+    }
+
+    /* ─── SECTION 1 · LANDING ──────────────────────────────── */
+    #landing {
+      background: linear-gradient(160deg, #fff0f5 0%, #ffd6e8 50%, #ffe8f0 100%);
+      text-align: center;
+      perspective: 1200px; /* enables child tilt */
+    }
+    .landing-inner {
+      animation: fadeInUp 1.2s ease both;
+      transition: transform .1s ease-out;
+      will-change: transform;
+    }
+    .crown { font-size: clamp(2.5rem, 8vw, 5rem); margin-bottom: 10px; }
+    .landing-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 6vw, 4rem);
+      color: #c0395e; line-height: 1.2;
+      text-shadow: 0 2px 12px rgba(192,57,94,.15);
+    }
+    .landing-title span { display: block; color: #e06084; font-style: italic; }
+    .landing-sub {
+      margin-top: 14px;
+      font-size: clamp(.95rem, 2.5vw, 1.15rem);
+      color: #b0607a; font-weight: 300; letter-spacing: .04em;
+    }
+    .btn-open {
+      margin-top: 36px; display: inline-block;
+      background: linear-gradient(135deg, #f4a0bb, #e06084);
+      color: #fff; border: none;
+      padding: 16px 38px; font-size: 1.05rem;
+      font-family: 'Lato', sans-serif; font-weight: 700;
+      letter-spacing: .06em; border-radius: 50px; cursor: pointer;
+      box-shadow: 0 6px 24px rgba(224,96,132,.35);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .btn-open:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 10px 30px rgba(224,96,132,.45); }
+    .scroll-hint {
+      margin-top: 48px; font-size: .82rem;
+      color: #d48aaa; letter-spacing: .08em;
+      animation: bounce 2s infinite;
+    }
+
+    /* ─── SECTION LABEL ────────────────────────────────────── */
+    .section-label {
+      display: inline-block;
+      background: linear-gradient(135deg, #f4a0bb, #e06084);
+      color: #fff; font-size: .75rem; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase;
+      padding: 5px 18px; border-radius: 50px; margin-bottom: 22px;
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       SECTION 2 · FLIP CARD 3D
+    ══════════════════════════════════════════════════════════ */
+    #pesan {
+      background: linear-gradient(160deg, #fff5f8, #fce4ec);
+    }
+    .pesan-scene {
+      perspective: 1400px;
+      width: min(640px, 92vw);
+      /* tall enough for content — set via JS if needed */
+    }
+    .flip-card {
+      width: 100%;
+      min-height: 480px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform .85s cubic-bezier(.4,0,.2,1);
+      cursor: pointer;
+      /* start revealed slightly toward viewer */
+      transform: rotateY(0deg);
+    }
+    .flip-card.flipped { transform: rotateY(180deg); }
+
+    /* shared face styles */
+    .flip-face {
+      position: absolute; inset: 0;
+      border-radius: 24px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: clamp(24px, 5vw, 52px);
+      box-shadow: 0 12px 48px rgba(192,57,94,.18);
+    }
+
+    /* FRONT face */
+    .flip-front {
+      background: linear-gradient(145deg, #fff0f5, #fce4ec);
+      border: 1px solid rgba(255,182,210,.5);
+    }
+    .flip-front .big-emoji { font-size: clamp(3.5rem, 10vw, 6rem); margin-bottom: 18px; }
+    .flip-front h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 4vw, 2.1rem);
+      color: #c0395e; text-align: center; margin-bottom: 14px;
+    }
+    .flip-front p {
+      color: #b0607a; font-weight: 300; text-align: center;
+      font-size: clamp(.9rem, 2.4vw, 1.05rem); line-height: 1.7;
+    }
+    .flip-hint {
+      margin-top: 28px;
+      display: flex; align-items: center; gap: 8px;
+      font-size: .82rem; color: #e06084; font-weight: 700;
+      letter-spacing: .06em; animation: pulse 2s infinite;
+    }
+    .flip-hint svg { width: 18px; height: 18px; fill: #e06084; }
+
+    /* BACK face — rotated 180° so it appears when card flips */
+    .flip-back {
+      background: linear-gradient(145deg, #fff, #fff5f8);
+      border: 1px solid rgba(255,182,210,.4);
+      transform: rotateY(180deg);
+      text-align: center;
+    }
+    .flip-back h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.3rem, 3.5vw, 1.9rem);
+      color: #c0395e; margin-bottom: 18px;
+    }
+    .pesan-text {
+      font-size: clamp(.88rem, 2.3vw, 1.02rem);
+      line-height: 1.9; color: #6d3045; font-weight: 300;
+      text-align: left;
+    }
+    .pesan-text strong { font-weight: 700; color: #e06084; }
+    .pesan-signature {
+      margin-top: 22px; width: 100%;
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: 1.05rem;
+      color: #c0395e; text-align: right;
+    }
+    .flip-back-hint {
+      margin-top: 20px; font-size: .78rem;
+      color: #d48aaa; letter-spacing: .05em;
+    }
+
+    /* make scene height match tallest face */
+    .pesan-scene { min-height: 480px; }
+
+    /* ══════════════════════════════════════════════════════════
+       SECTION 3 · 3D ROTATING CUBE GALLERY
+    ══════════════════════════════════════════════════════════ */
+    #galeri {
+      background: linear-gradient(160deg, #fce4ec, #fff0f5);
+    }
+    .galeri-header {
+      text-align: center; margin-bottom: 44px;
+      opacity: 0; transform: translateY(30px);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+    .galeri-header.visible { opacity: 1; transform: translateY(0); }
+    .galeri-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      color: #c0395e; margin-top: 10px;
+    }
+    .galeri-header p { color: #b0607a; margin-top: 8px; font-weight: 300; }
+
+    /* cube scene */
+    .cube-scene {
+      perspective: 900px;
+      width: min(300px, 70vw);
+      height: min(300px, 70vw);
+      margin: 0 auto;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+    }
+    .cube-scene:active { cursor: grabbing; }
+    .cube {
+      width: 100%; height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      /* initial slight tilt so 3D is visible right away */
+      transform: rotateX(-15deg) rotateY(20deg);
+      transition: transform .05s linear;
+      will-change: transform;
+    }
+    .cube-face {
+      position: absolute; inset: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-size: clamp(2rem, 8vw, 3.5rem);
+      border: 3px solid rgba(255,255,255,.7);
+      box-shadow: inset 0 0 30px rgba(192,57,94,.08);
+    }
+    /* Each face background */
+    .cube-face.front  { background: linear-gradient(135deg,#fce4ec,#f8bbd0); transform: translateZ(calc(min(300px,70vw)/2)); }
+    .cube-face.back   { background: linear-gradient(135deg,#f48fb1,#f06292); transform: rotateY(180deg) translateZ(calc(min(300px,70vw)/2)); }
+    .cube-face.left   { background: linear-gradient(135deg,#fce4ec,#f48fb1); transform: rotateY(-90deg) translateZ(calc(min(300px,70vw)/2)); }
+    .cube-face.right  { background: linear-gradient(135deg,#f8bbd0,#e91e8c30); transform: rotateY(90deg)  translateZ(calc(min(300px,70vw)/2)); }
+    .cube-face.top    { background: linear-gradient(135deg,#fff0f5,#fce4ec); transform: rotateX(90deg)  translateZ(calc(min(300px,70vw)/2)); }
+    .cube-face.bottom { background: linear-gradient(135deg,#fce4ec,#fff0f5); transform: rotateX(-90deg) translateZ(calc(min(300px,70vw)/2)); }
+
+    .cube-face img {
+      width: 100%; height: 100%; object-fit: cover;
+      border-radius: 10px; pointer-events: none;
+    }
+    .cube-face .face-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(192,57,94,.55));
+      color: #fff; padding: 8px 10px 10px;
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: clamp(.7rem, 2vw, .85rem);
+      text-align: center; pointer-events: none;
+    }
+
+    .cube-hint {
+      margin-top: 24px; text-align: center;
+      font-size: .82rem; color: #b0607a;
+      letter-spacing: .04em; opacity: .8;
+    }
+
+    /* polaroid strip below cube (still kept, as a small grid) */
+    .thumb-strip {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 12px; margin-top: 36px;
+      max-width: 680px; width: 100%;
+    }
+    .thumb {
+      width: 90px;
+      background: #fff;
+      padding: 6px 6px 22px;
+      border-radius: 3px;
+      box-shadow: 0 3px 14px rgba(192,57,94,.13);
+      transform: rotate(var(--rot, 0deg));
+      transition: transform .3s, box-shadow .3s;
+      cursor: pointer;
+      font-size: 1.6rem;
+      text-align: center;
+    }
+    .thumb:hover { transform: rotate(0deg) scale(1.12); box-shadow: 0 8px 24px rgba(192,57,94,.22); }
+    .thumb .thumb-img {
+      width: 100%; aspect-ratio: 1;
+      background: linear-gradient(135deg,#fce4ec,#f8bbd0);
+      border-radius: 2px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .thumb .thumb-img img { width:100%; height:100%; object-fit:cover; }
+    .thumb .thumb-caption {
+      margin-top: 4px; font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: .62rem; color: #c0395e;
+    }
+
+    /* ─── SECTION 4 · MUSIK ────────────────────────────────── */
+    #musik { background: linear-gradient(160deg, #fff0f5, #fce4ec); }
+    .musik-wrapper {
+      text-align: center; max-width: 680px; width: 100%;
+      opacity: 0; transform: translateY(40px);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+    .musik-wrapper.visible { opacity: 1; transform: translateY(0); }
+    .musik-wrapper h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      color: #c0395e; margin: 12px 0 8px;
+    }
+    .musik-wrapper > p { color: #b0607a; font-weight: 300; margin-bottom: 28px; }
+    .spotify-embed { border-radius: 18px; overflow: hidden; box-shadow: 0 8px 32px rgba(192,57,94,.2); }
+    .spotify-embed iframe { display: block; border-radius: 18px; }
+
+    /* ─── FOOTER ────────────────────────────────────────────── */
+    footer {
+      position: relative; z-index: 1;
+      background: linear-gradient(135deg, #f4a0bb, #e06084);
+      padding: 40px 20px 32px; text-align: center;
+    }
+    .btn-secret {
+      background: rgba(255,255,255,.2);
+      border: 2px solid rgba(255,255,255,.6);
+      color: #fff; font-size: .9rem;
+      font-family: 'Lato', sans-serif; font-weight: 700;
+      letter-spacing: .06em; padding: 12px 28px;
+      border-radius: 50px; cursor: pointer;
+      transition: background .25s, transform .25s;
+    }
+    .btn-secret:hover { background: rgba(255,255,255,.35); transform: scale(1.05); }
+    footer p { color: rgba(255,255,255,.75); font-size: .82rem; margin-top: 18px; }
+
+    /* ─── MODAL RAHASIA ─────────────────────────────────────── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(80,10,30,.55); z-index: 1000;
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-overlay.open { display: flex; animation: fadeIn .3s ease; }
+    .modal-box {
+      background: #fff; border-radius: 24px;
+      max-width: 480px; width: 100%;
+      padding: 40px 32px; text-align: center;
+      box-shadow: 0 16px 64px rgba(80,10,30,.25);
+      animation: scaleIn .35s ease;
+    }
+    .modal-box .emoji { font-size: 3rem; }
+    .modal-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; color: #c0395e; margin: 16px 0 12px;
+    }
+    .modal-box p { color: #6d3045; line-height: 1.8; font-weight: 300; }
+    .btn-close-modal {
+      margin-top: 24px;
+      background: linear-gradient(135deg, #f4a0bb, #e06084);
+      color: #fff; border: none; padding: 12px 32px;
+      border-radius: 50px; font-size: .95rem;
+      font-family: 'Lato', sans-serif; font-weight: 700;
+      cursor: pointer; transition: transform .2s;
+    }
+    .btn-close-modal:hover { transform: scale(1.05); }
+
+    /* ─── NAV DOTS ──────────────────────────────────────────── */
+    .nav-dots {
+      position: fixed; right: 18px; top: 50%;
+      transform: translateY(-50%);
+      display: flex; flex-direction: column;
+      gap: 10px; z-index: 100;
+    }
+    .nav-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: rgba(192,57,94,.25);
+      cursor: pointer; transition: background .3s, transform .3s;
+    }
+    .nav-dot.active { background: #e06084; transform: scale(1.3); }
+
+    /* ─── KEYFRAMES ─────────────────────────────────────────── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn  { from { opacity:0; } to { opacity:1; } }
+    @keyframes scaleIn {
+      from { transform: scale(.85); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(8px); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: .5; }
+    }
+    @keyframes autoSpin {
+      from { transform: rotateX(-15deg) rotateY(0deg); }
+      to   { transform: rotateX(-15deg) rotateY(360deg); }
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────────────────── */
+    @media (max-width: 480px) {
+      .nav-dots { right: 10px; }
+      .thumb { width: 72px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Floating hearts -->
+<canvas id="heart-canvas"></canvas>
+
+<!-- Nav dots -->
+<nav class="nav-dots" aria-label="Navigasi halaman">
+  <div class="nav-dot active" data-target="landing" title="Home"></div>
+  <div class="nav-dot"        data-target="pesan"   title="Pesan"></div>
+  <div class="nav-dot"        data-target="galeri"  title="Galeri"></div>
+  <div class="nav-dot"        data-target="musik"   title="Musik"></div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 1 · LANDING  (parallax tilt on mousemove)
+══════════════════════════════════════════════════ -->
+<section id="landing">
+  <div class="landing-inner" id="landingInner">
+    <div class="crown">🎀</div>
+    <h1 class="landing-title">
+      Happy Birthday,
+      <span>Naila Shafa Azzahra!</span>
+    </h1>
+    <p class="landing-sub">Hari yang paling spesial dalam hidupmu 🌸</p>
+    <button class="btn-open" onclick="revealSurprise()">Buka di sini ✨</button>
+    <p class="scroll-hint">▼ scroll untuk lebih</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 2 · FLIP CARD 3D
+══════════════════════════════════════════════════ -->
+<section id="pesan">
+  <div class="pesan-scene reveal-on-scroll" id="pesanScene">
+    <div class="flip-card" id="flipCard" onclick="toggleFlip()" role="button"
+         tabindex="0" aria-label="Klik untuk membuka pesan">
+
+      <!-- DEPAN -->
+      <div class="flip-face flip-front">
+        <div class="big-emoji">💌</div>
+        <span class="section-label">Pesan Untukmu</span>
+        <h2>Untuk Naila Shafa Azzahra</h2>
+        <p>Ada sesuatu yang selalu ingin aku katakan padamu…<br>
+           sesuatu yang tidak cukup ditulis dalam satu kata.</p>
+        <div class="flip-hint">
+          <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+          Klik / sentuh untuk membuka 💕
+        </div>
+      </div>
+
+      <!-- BELAKANG -->
+      <div class="flip-face flip-back">
+        <span class="section-label">💕 Hanya Untukmu</span>
+        <h2>Untuk Cintaku Tersayang</h2>
+        <p class="pesan-text">
+          Naila,<br><br>
+          3 november ini adalah hari yg sepetsial untuk mu yang pertama inggin hadit ucapkan yaitu semoga 
+          <strong>panjang umur dan seha</strong> elalu semoga di umur yg 17 tahun ini kamu bisa lebih ngerti lagi keaadaaan.
+          aku heheheehe dan kamuu harus bisa belajar mengambil keputusan yg matang, kesalahan bukan berati kamu gagal tetapi satu langkah lebih maju karna dengan kesalahan kita bisa belajar dan evaluasi diri kita jadi orang yg lebih baik, hahahah jadi kata kata lagi😅😅 akuuuu bersyukur bisa bertemu .<br><br>
+          kamu di sekolah yg rasanya kaya penjara,kamu harus tetap semangat dan kuat yahh,samaa maaf aku selalu bikin kesal🤍🤍🤍<br><br>
+          <strong>Aku mencintaimu hari ini, besok, dan seterusnya.</strong>
+        </p>
+        <p class="pesan-signature">— Haditya Putra Emawan</p>
+        <p class="flip-back-hint">↩ Klik lagi untuk menutup</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 3 · 3D CUBE GALLERY
+══════════════════════════════════════════════════ -->
+<section id="galeri">
+  <div class="galeri-header reveal-on-scroll">
+    <!-- <span class="section-label">📸</span> -->
+    <h2>My World</h2>
+    <p>Naila Shafa Azzahra</p>
+  </div>
+
+  <!-- 3D Cube — drag to rotate -->
+  <div class="cube-scene" id="cubeScene" aria-label="Galeri foto 3D, seret untuk memutar">
+    <div class="cube" id="cube3d">
+
+      <!--
+        CARA PASANG FOTO:
+        Ganti emoji di dalam .thumb-img dengan:
+        <img src="foto.jpg" alt="keterangan">
+      -->
+      <div class="cube-face front">
+        <div style="font-size:clamp(2rem,9vw,4rem)"><img src="asset/1.jpeg"></div>
+        <div class="face-caption"> So Pretty</div>
+      </div>
+      <div class="cube-face back">
+        <div style="font-size:clamp(2rem,9vw,4rem)"><img src="asset/2.jpg"></div>
+        <div class="face-caption">Bidadariku</div>
+      </div>
+      <div class="cube-face left">
+        <div style="font-size:clamp(2rem,9vw,4rem)"><img src="asset/3.jpg"></div>
+        <div class="face-caption">Kesayanganku</div>
+      </div>
+      <div class="cube-face right">
+        <div style="font-size:clamp(2rem,9vw,4rem)"><img src="asset/4.jpeg"></div>
+        <div class="face-caption">perfect Girl ❤️</div>
+      </div>
+      <div class="cube-face top">
+        <div style="font-size:clamp(2rem,9vw,4rem)"><img src="asset/5.jpeg"></div>
+        <div class="face-caption">Beautiful Soul</div>
+      </div>
+      <div class="cube-face bottom">
+        <div style="font-size:clamp(2rem,9vw,4rem)"><img src="asset/6.jpg"></div>
+        <div class="face-caption">Manis sepertimu 🍰</div>
+      </div>
+    </div>
+  </div>
+  <p class="cube-hint">Drag / swipe untuk memutar</p>
+
+  <!-- Thumbnail strip -->
+  <div class="thumb-strip">
+    <div class="thumb" style="--rot:-2deg" onclick="rotateCubeTo(0,0)">
+      <div class="thumb-img"><img src="asset/7.jpeg"></div>
+      <div class="thumb-caption">Pertama 💕</div>
+    </div>
+    <div class="thumb" style="--rot:1.5deg" onclick="rotateCubeTo(0,180)">
+      <div class="thumb-img"><img src="asset/8.jpg"></div>
+      <div class="thumb-caption">Termanis 🥰</div>
+    </div>
+    <div class="thumb" style="--rot:-1deg" onclick="rotateCubeTo(0,90)">
+      <div class="thumb-img"><img src="asset/9.jpg"></div>
+      <div class="thumb-caption">Petualangan 🗺️</div>
+    </div>
+    <div class="thumb" style="--rot:2deg" onclick="rotateCubeTo(0,-90)">
+      <div class="thumb-img"><img src="asset/10.jpg"></div>
+      <div class="thumb-caption">Ajaib 🌙</div>
+    </div>
+    <div class="thumb" style="--rot:-1.5deg" onclick="rotateCubeTo(-90,0)">
+      <div class="thumb-img"><img src="asset/11.jpeg"></div>
+      <div class="thumb-caption">Favorit 💖</div>
+    </div>
+    <div class="thumb" style="--rot:1deg" onclick="rotateCubeTo(90,0)">
+      <div class="thumb-img"><img src="asset/12.jpeg"></div>
+      <div class="thumb-caption">Manis 🍰</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     SECTION 4 · MUSIK
+══════════════════════════════════════════════════ -->
+<section id="musik">
+  <div class="musik-wrapper reveal-on-scroll">
+    <span class="section-label">🎵 Lagu Kita</span>
+    <h2>Playlist Spesial Untukmu</h2>
+    <p>Dengarkan sambil membaca pesanku 🎧</p>
+    <!--
+      CARA GANTI PLAYLIST:
+      1. Buka playlist Spotify → ••• → Share → Embed playlist
+      2. Salin URL dari src="..."
+    -->
+    <div class="spotify-embed">
+  <iframe
+    style="border-radius:12px"
+    src="https://open.spotify.com/embed/playlist/4UfMOYT424Pl76slhE0ZBY?utm_source=generator&si=47d7d454013e4911"
+    width="100%" 
+    height="352" 
+    frameBorder="0" 
+    allowfullscreen="" 
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+    loading="lazy" 
+    title="Playlist Ulang Tahun Naila">
+  </iframe>
+</div>
+<p style="margin-top:14px; font-size:.82rem; color:#b0607a;">
+
+</p>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════ -->
+<footer>
+  <button class="btn-secret" onclick="openSecret()">🔒 Ada Kejutan Rahasia...</button>
+  <p>Dibuat dengan 💕 khusus untuk Naila Shafa Azzahra · 2025</p>
+</footer>
+
+<!-- ══════════════════════════════════════════════════
+     MODAL RAHASIA
+══════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="secretModal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-box">
+    <div class="emoji">💌</div>
+    <h3 id="modal-title">Pesan Paling Rahasia</h3>
+    <p>
+      Kalau kamu membaca ini, kamu sudah tahu bahwa kamu adalah orang yang
+      paling spesial di seluruh hidupku. Tidak ada kata yang cukup untuk
+      menggambarkan betapa bersyukurnya aku memilikimu.<br><br>
+      <strong>Aku mencintaimu — bukan hanya hari ini, tapi setiap hari.</strong> 💕
+    </p>
+    <button class="btn-close-modal" onclick="closeSecret()">Tutup 🌸</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════════ -->
+<script>
+/* ─────────────────────────────────────────────────────
+   FLOATING HEARTS (Canvas)
+───────────────────────────────────────────────────── */
+const canvas = document.getElementById('heart-canvas');
+const ctx    = canvas.getContext('2d');
+let hearts   = [];
+let W, H;
+
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+window.addEventListener('resize', resize);
+resize();
+
+function heartPath(cx, cy, s) {
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.bezierCurveTo(cx, cy-s*.3, cx-s*.5, cy-s*.7, cx-s*.5, cy-s);
+  ctx.bezierCurveTo(cx-s*.5, cy-s*1.4, cx, cy-s*1.4, cx, cy-s);
+  ctx.bezierCurveTo(cx, cy-s*1.4, cx+s*.5, cy-s*1.4, cx+s*.5, cy-s);
+  ctx.bezierCurveTo(cx+s*.5, cy-s*.7, cx, cy-s*.3, cx, cy);
+  ctx.closePath();
+}
+
+function spawnHeart() {
+  hearts.push({
+    x: Math.random()*W, y: H+20,
+    size:  6+Math.random()*14,
+    speed: .4+Math.random()*.9,
+    drift: (Math.random()-.5)*.6,
+    alpha: .15+Math.random()*.4,
+    color: `hsl(${340+Math.random()*20},80%,${70+Math.random()*15}%)`
+  });
+}
+
+(function animateHearts() {
+  ctx.clearRect(0,0,W,H);
+  if (Math.random()<.04) spawnHeart();
+  hearts = hearts.filter(h => h.y+h.size > -30);
+  hearts.forEach(h => {
+    h.y -= h.speed; h.x += h.drift;
+    h.alpha = Math.max(0, h.alpha-.0008);
+    ctx.save(); ctx.globalAlpha = h.alpha; ctx.fillStyle = h.color;
+    heartPath(h.x, h.y, h.size); ctx.fill(); ctx.restore();
+  });
+  requestAnimationFrame(animateHearts);
+})();
+
+/* ─────────────────────────────────────────────────────
+   LANDING PARALLAX TILT (mousemove)
+───────────────────────────────────────────────────── */
+const landingSection = document.getElementById('landing');
+const landingInner   = document.getElementById('landingInner');
+
+landingSection.addEventListener('mousemove', e => {
+  const r  = landingSection.getBoundingClientRect();
+  const cx = r.left + r.width  / 2;
+  const cy = r.top  + r.height / 2;
+  const dx = (e.clientX - cx) / (r.width  / 2); // -1 to 1
+  const dy = (e.clientY - cy) / (r.height / 2);
+  landingInner.style.transform =
+    `rotateY(${dx * 8}deg) rotateX(${-dy * 6}deg) translateZ(0)`;
+});
+landingSection.addEventListener('mouseleave', () => {
+  landingInner.style.transform = '';
+});
+
+/* ─────────────────────────────────────────────────────
+   SCROLL REVEAL
+───────────────────────────────────────────────────── */
+const revealObs = new IntersectionObserver(
+  entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+  { threshold: .12 }
+);
+document.querySelectorAll('.reveal-on-scroll').forEach(el => revealObs.observe(el));
+
+/* ─────────────────────────────────────────────────────
+   NAV DOTS
+───────────────────────────────────────────────────── */
+const navSections = ['landing','pesan','galeri','musik'];
+const dots        = document.querySelectorAll('.nav-dot');
+
+dots.forEach(dot => {
+  dot.addEventListener('click', () =>
+    document.getElementById(dot.dataset.target).scrollIntoView({ behavior: 'smooth' })
+  );
+});
+
+const secObs = new IntersectionObserver(
+  entries => entries.forEach(e => {
+    if (e.isIntersecting) {
+      dots.forEach(d => d.classList.remove('active'));
+      const a = document.querySelector(`.nav-dot[data-target="${e.target.id}"]`);
+      if (a) a.classList.add('active');
+    }
+  }),
+  { threshold: .45 }
+);
+navSections.forEach(id => { const el = document.getElementById(id); if (el) secObs.observe(el); });
+
+/* ─────────────────────────────────────────────────────
+   REVEAL SURPRISE BURST
+───────────────────────────────────────────────────── */
+function revealSurprise() {
+  document.getElementById('pesan').scrollIntoView({ behavior: 'smooth' });
+  for (let i = 0; i < 35; i++) {
+    setTimeout(() => {
+      hearts.push({
+        x: Math.random()*W, y: H*.6+Math.random()*(H*.4),
+        size: 8+Math.random()*18, speed: 1+Math.random()*2,
+        drift: (Math.random()-.5)*1.2, alpha: .5+Math.random()*.4,
+        color: `hsl(${335+Math.random()*25},85%,${65+Math.random()*15}%)`
+      });
+    }, i*55);
+  }
+}
+
+/* ─────────────────────────────────────────────────────
+   FLIP CARD 3D
+───────────────────────────────────────────────────── */
+const flipCard   = document.getElementById('flipCard');
+const pesanScene = document.getElementById('pesanScene');
+
+function toggleFlip() {
+  flipCard.classList.toggle('flipped');
+  // auto-expand scene height to show back content
+  if (flipCard.classList.contains('flipped')) {
+    pesanScene.style.minHeight = flipCard.querySelector('.flip-back').scrollHeight + 'px';
+  } else {
+    pesanScene.style.minHeight = '';
+  }
+}
+
+// keyboard accessibility
+flipCard.addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleFlip(); }
+});
+
+/* ─────────────────────────────────────────────────────
+   3D CUBE — drag / touch to rotate
+───────────────────────────────────────────────────── */
+const cubeScene = document.getElementById('cubeScene');
+const cube      = document.getElementById('cube3d');
+
+let rotX   = -15;  // current rotation angles
+let rotY   =  20;
+let animId = null; // auto-spin RAF id
+let isDragging = false;
+let lastX, lastY;
+let velX = 0, velY = 0; // momentum
+
+// ── auto-spin when not interacting ──
+let idleTimer = null;
+function startAutoSpin() {
+  if (animId) return;
+  (function spin() {
+    rotY  += .35;
+    rotX  += .08;
+    applyCubeTransform(false); // no transition while spinning
+    animId = requestAnimationFrame(spin);
+  })();
+}
+function stopAutoSpin() {
+  if (animId) { cancelAnimationFrame(animId); animId = null; }
+}
+function resetIdleTimer() {
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(startAutoSpin, 3000); // resume after 3s idle
+}
+
+function applyCubeTransform(smooth = true) {
+  cube.style.transition = smooth ? 'transform .5s cubic-bezier(.4,0,.2,1)' : 'none';
+  cube.style.transform  = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+}
+
+// ── pointer events (mouse + touch via pointer API) ──
+cubeScene.addEventListener('pointerdown', e => {
+  stopAutoSpin();
+  isDragging = true;
+  lastX = e.clientX; lastY = e.clientY;
+  velX = 0; velY = 0;
+  cubeScene.setPointerCapture(e.pointerId);
+});
+
+cubeScene.addEventListener('pointermove', e => {
+  if (!isDragging) return;
+  const dx = e.clientX - lastX;
+  const dy = e.clientY - lastY;
+  rotY += dx * .5;
+  rotX -= dy * .5;
+  // clamp X so cube doesn't flip upside-down too much
+  rotX = Math.max(-75, Math.min(75, rotX));
+  velX = dx * .5; velY = dy * .5;
+  lastX = e.clientX; lastY = e.clientY;
+  applyCubeTransform(false);
+});
+
+cubeScene.addEventListener('pointerup', () => {
+  if (!isDragging) return;
+  isDragging = false;
+  // momentum coast
+  (function coast() {
+    if (Math.abs(velX) < .05 && Math.abs(velY) < .05) { resetIdleTimer(); return; }
+    velX *= .92; velY *= .92;
+    rotY += velX; rotX -= velY;
+    rotX = Math.max(-75, Math.min(75, rotX));
+    applyCubeTransform(false);
+    requestAnimationFrame(coast);
+  })();
+});
+
+cubeScene.addEventListener('pointerleave', () => {
+  if (isDragging) { isDragging = false; resetIdleTimer(); }
+});
+
+// ── thumbnail click — snap to face ──
+function rotateCubeTo(x, y) {
+  stopAutoSpin();
+  rotX = x; rotY = y;
+  applyCubeTransform(true);
+  resetIdleTimer();
+}
+
+// Kick off auto-spin on load
+startAutoSpin();
+// pause auto-spin when section not visible
+const cubeObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { e.isIntersecting ? startAutoSpin() : stopAutoSpin(); });
+}, { threshold: .3 });
+cubeObs.observe(document.getElementById('galeri'));
+
+/* ─────────────────────────────────────────────────────
+   SECRET MODAL
+───────────────────────────────────────────────────── */
+function openSecret() {
+  const m = document.getElementById('secretModal');
+  m.style.display = 'flex';
+  requestAnimationFrame(() => m.classList.add('open'));
+}
+function closeSecret() {
+  const m = document.getElementById('secretModal');
+  m.classList.remove('open');
+  setTimeout(() => { m.style.display = 'none'; }, 300);
+}
+document.getElementById('secretModal').addEventListener('click', function(e) {
+  if (e.target === this) closeSecret();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSecret(); });
+</script>
+</body>
+</html>
